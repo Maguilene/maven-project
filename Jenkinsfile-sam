@@ -2,7 +2,7 @@ pipeline {
     agent any
    
    environment {
-		DOCKERHUB_CREDENTIALS=credentials('dockerhub')
+		DOCKERHUB_CREDENTIALS=DevOps2021@('dockerhub')
 	}
 
     options { buildDiscarder(logRotator(artifactDaysToKeepStr: '',
