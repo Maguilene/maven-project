@@ -3,8 +3,7 @@ pipeline {
 
     stages {
         stage('clean') {
-            docker { image 'maven:3.8.5-openjdk-8-slim
-' }
+            docker { image 'maven:3.8.5-openjdk-8-slim' }
 
             steps {
                 sh '''
@@ -13,8 +12,7 @@ pipeline {
             }
         }
         stage('compile') {
-           docker { image 'maven:3.8.5-openjdk-8-slim
-' }
+           docker { image 'maven:3.8.5-openjdk-8-slim' }
             steps {
                 sh '''
                 mvn compile
@@ -22,8 +20,7 @@ pipeline {
             }
         }
         stage('validate') {
-            docker { image 'maven:3.8.5-openjdk-8-slim
-' }
+            docker { image 'maven:3.8.5-openjdk-8-slim' }
             steps {
                 sh '''
                 mvn validate
@@ -31,8 +28,7 @@ pipeline {
             }
         }
         stage('test') {
-           docker { image 'maven:3.8.5-openjdk-8-slim
-' }
+           docker { image 'maven:3.8.5-openjdk-8-slim' }
             steps {
                 sh '''
                 mvn test
@@ -40,17 +36,16 @@ pipeline {
             }
         }
         stage('package') {
-            docker { image 'maven:3.8.5-openjdk-8-slim
-' }
+            docker { image 'maven:3.8.5-openjdk-8-slim' }
             steps {
                 sh '''
                 mvn package
+               ls -l webapp/
                 '''
             }
         }
         stage('verify') {
-            docker { image 'maven:3.8.5-openjdk-8-slim
-' }
+            docker { image 'maven:3.8.5-openjdk-8-slim' }
             steps {
                 sh '''
                 mvn verify
@@ -58,8 +53,7 @@ pipeline {
             }
         }
         stage('install') {
-            docker { image 'maven:3.8.5-openjdk-8-slim
-' }
+            docker { image 'maven:3.8.5-openjdk-8-slim' }
             steps {
                 sh '''
                 mvn install
