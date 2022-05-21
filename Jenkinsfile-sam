@@ -1,7 +1,28 @@
-[4:12 PM, 5/21/2022] Eric Kemvou: pipeline {
+pipeline {
     agent any
 
     stages {
+        
+       stage('Setup parameters') {
+            steps {
+                script { 
+                    properties([
+                        parameters([
+                          
+
+                            string(
+                                defaultValue: '001', 
+                                name: 'Image-TAG', 
+                                trim: true
+                            )
+                        ])
+                    ])
+                }
+            }
+        }
+
+
+
 
         stage('clean') {
             agent {
@@ -10,6 +31,7 @@
 
             steps {
                sh '''
+               rm -rf webapp/target/webapp.war || true
               mvn clean
                '''
             }
@@ -60,6 +82,7 @@ stage('package') {
 
             steps {
                sh '''
+            
               mvn package
               ls -l webapp/target
               pwd
@@ -92,50 +115,16 @@ stage('install') {
             }
         }
        
+stage('build ') {
+
+            steps {
+               sh '''
+           docker build -t devopseasylearning2021:$Image-TAG .
+               '''
+            }
+        }
+       
 
 
     }
 }
-[4:17 PM, 5/21/2022] Eric Kemvou: FROM tomcat:8.0-alpine
-COPY webapp/target/webapp.war  /usr/local/tomcat/webapps
-[4:23 PM, 5/21/2022] Eric Kemvou: pipeline {
-    agent any
-
-    stages {
-
-        stage('clean') {
-            agent {
-                 docker { image 'maven:3.8.5-openjdk-8-slim' }
-             }
-
-            steps {
-               sh '''
-               rm -rf webapp/target/webapp.war || true
-              mvn clean
-               '''
-            }
-        }
-
-        stage('compile') {
-            agent {
-                 docker { image 'maven:3.8.5-openjdk-8-slim' }
-             }
-
-            steps {
-               sh '''
-             mvn compile
-               '''
-            }
-        }
-
-stage('validate') {
-    agent {
-                 docker { image 'maven:3.8.5-openjdk-8-slim' }
-             }
-
-            steps {
-               sh '''
-               mvn validate
-               '''
-            }
-        }
